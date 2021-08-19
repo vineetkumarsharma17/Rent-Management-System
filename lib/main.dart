@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:rent_management_system/pages/add_renter.dart';
+import 'package:rent_management_system/pages/admin_panel.dart';
 void main(){
   runApp(MyApp());
 }
@@ -96,6 +98,7 @@ class _LogInPageState extends State<LogInPage> {
               margin: EdgeInsets.only(left: 60,right: 60,top: 50),
               child: ElevatedButton(
                 onPressed: (){
+                  Navigator.push(context,MaterialPageRoute(builder: (context)=>AdminPanel()));
 
                 },
                 child: Text("Log In"),
