@@ -109,5 +109,9 @@ class DatabaseHelperRenter{
       );
     });
   }
+  Future<int> deleteRenter(String aadhar) async {
+    Database db = await instance.database;
+    return await db.delete(table, where: '$aadharColumn = ?', whereArgs: [aadhar]);
+  }
 
 }

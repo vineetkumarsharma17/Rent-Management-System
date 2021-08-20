@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rent_management_system/pages/add_renter.dart';
 import 'package:rent_management_system/pages/admin_db_helper.dart';
 import 'package:rent_management_system/pages/admin_panel.dart';
 import 'package:rent_management_system/pages/sign_up.dart';
@@ -11,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home:AdminPanel() ,
+      home:LogInPage() ,
       //color: Colors.white,
     );
   }
@@ -40,7 +41,7 @@ class _LogInPageState extends State<LogInPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              color: Colors.yellow,
+              //color: Colors.yellow,
               alignment: Alignment.center,
               margin: EdgeInsets.only(left: 30,right: 30,top: 50),
               child: Text("Log In",style: TextStyle(

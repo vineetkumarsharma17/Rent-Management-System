@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:rent_management_system/pages/renter_db_helper.dart';
+import 'package:rent_management_system/pages/view_all_renter.dart';
 class AddRenter extends StatefulWidget {
 
   @override
@@ -23,12 +24,13 @@ class _AddRenterState extends State<AddRenter> {
   List <RenterDetail>allRenter;
   void viewRenter()async{
     allRenter=await db.viewAllRenter();
-    allRenter.forEach((obj) {
-      print("name:${obj.name}");
-      print('aadhar:${obj.aadhar}');
-      print("date:${obj.date}");
-      print("===================================");
-    });
+    Navigator.push(context, MaterialPageRoute(builder: (context)=>ShowAllRenter(allRenter)));
+    // allRenter.forEach((obj) {
+    //   print("name:${obj.name}");
+    //   print('aadhar:${obj.aadhar}');
+    //   print("date:${obj.date}");
+    //   print("===================================");
+    // });
 
   }
   void saverRenter()async{
@@ -44,8 +46,8 @@ class _AddRenterState extends State<AddRenter> {
       date: rent_date,
     );
     db.insertRenter(obj);
+    SavedAlert(context);
     print("Datasaved");
-    viewRenter();
   }
   Future<void> _selectDate(BuildContext context) async {
     final DateTime pickedDate = await showDatePicker(
@@ -317,14 +319,47 @@ class _AddRenterState extends State<AddRenter> {
               )
             ),
             SizedBox(height: 30,),
-            ElevatedButton(
-              onPressed: saverRenter,
-              child: Text("Add renter"),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: (){
+                    (name.text==''||f_name.text==''||aadhar.text==''||email.text==''
+                        ||contact_no.text==''||contact_no2==''||room_no.text==''||rent_amount==''
+                        ||rent_date=='')? SavedAlert(context):saverRenter();
+                  },
+                  child: Text("Add renter"),
+                ),
+                ElevatedButton(onPressed: viewRenter, child: Text("ShowAll")),
+              ],
             ),
-            ElevatedButton(onPressed: viewRenter, child: Text("ShowAll")),
+
           ],
         ),
       ),
     );
+  }
+  void SavedAlert(BuildContext context){
+    Widget okButton=TextButton(
+        onPressed: (){
+          Navigator.of(context).pop();
+          setState(() {
+          });
+        },
+        child: Text("Ok")
+    );
+    AlertDialog savealert=AlertDialog(
+      title: (name.text==''||f_name.text==''||aadhar.text==''||email.text==''
+          ||contact_no.text==''||contact_no2==''||room_no.text==''||rent_amount==''
+      ||rent_date=='')
+          ?Text("Error!"):Text("Saved!"),
+      content: (name.text==''||f_name.text==''||aadhar.text==''||email.text==''
+          ||contact_no.text==''||contact_no2==''||room_no.text==''||rent_amount==''
+          ||rent_date=='')?Text("All details must be filled."):Text("User added."),
+      actions: [okButton],
+    );
+    showDialog(context: context, builder: (BuildContext context){
+      return savealert;
+    });
   }
 }

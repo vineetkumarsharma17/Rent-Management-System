@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rent_management_system/pages/add_renter.dart';
+import 'package:rent_management_system/pages/delete_renter.dart';
 import 'package:rent_management_system/pages/sign_up.dart';
 class AdminPanel extends StatefulWidget {
   @override
@@ -11,7 +12,7 @@ class _AdminPanelState extends State<AdminPanel> {
   final List _pages=<Widget>[
     AddRenter(),
     SignUpPage(),
-    AddRenter(),
+    DeleteRenter(),
   ];
 
   int _currentState=0;
