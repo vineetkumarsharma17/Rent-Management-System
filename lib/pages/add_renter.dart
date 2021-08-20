@@ -1,8 +1,7 @@
-import 'dart:developer';
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:intl/intl.dart';
+import 'package:rent_management_system/pages/renter_db_helper.dart';
 class AddRenter extends StatefulWidget {
 
   @override
@@ -20,8 +19,34 @@ class _AddRenterState extends State<AddRenter> {
   TextEditingController rent_amount=TextEditingController();
   DateTime currentDate = DateTime.now();
   String rent_date='';
-   // DateFormat formatter = DateFormat('yyyy-MM-dd');
-   // String rent_date=formatter.format(currentDate);
+  final db=DatabaseHelperRenter.instance;
+  List <RenterDetail>allRenter;
+  void viewRenter()async{
+    allRenter=await db.viewAllRenter();
+    allRenter.forEach((obj) {
+      print("name:${obj.name}");
+      print('aadhar:${obj.aadhar}');
+      print("date:${obj.date}");
+      print("===================================");
+    });
+
+  }
+  void saverRenter()async{
+    RenterDetail obj=RenterDetail(
+      name: name.text,
+      father_name: f_name.text,
+      aadhar: aadhar.text,
+      email: email.text,
+      mobile: contact_no.text,
+      mobile2: contact_no2.text,
+      room_no: room_no.text,
+      rent: rent_amount.text,
+      date: rent_date,
+    );
+    db.insertRenter(obj);
+    print("Datasaved");
+    viewRenter();
+  }
   Future<void> _selectDate(BuildContext context) async {
     final DateTime pickedDate = await showDatePicker(
         context: context,
@@ -44,141 +69,241 @@ class _AddRenterState extends State<AddRenter> {
         child: Column(
           children: [
             Container(
-              padding: EdgeInsets.zero,
-              height: 40,
+              padding: EdgeInsets.only(left: 20),
+              height: 50,
               margin: EdgeInsets.only(left: 20,right: 20,top: 20),
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.black)
+                color: Colors.white,
+                border: Border.all(color: Colors.green),
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  new BoxShadow(
+                    color: Colors.green,
+                    offset: Offset(3,3),
+                    blurRadius: 7,
+                    spreadRadius: 1,
+                  ),
+                ]
               ),
               child: TextField(
                 controller: name,
                 decoration: InputDecoration(
-                  labelText: "Name",
+                  icon: Icon(Icons.person),
+                  //hintText: "Name",
+                  hintText: "Name",
                   border: InputBorder.none,
                 ),
               ),
             ),
             Container(
-              padding: EdgeInsets.zero,
+              padding: EdgeInsets.only(left: 20,right: 20),
               height: 40,
               margin: EdgeInsets.only(left: 20,right: 20,top: 20),
               decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black)
+                  border: Border.all(color: Colors.green),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  new BoxShadow(
+                    color: Colors.green,
+                    offset: Offset(3,3),
+                    blurRadius: 9,
+                    spreadRadius: 1,
+                  ),
+                ]
               ),
               child: TextField(
                 controller: f_name,
                 decoration: InputDecoration(
-                  labelText: "Father's name",
+                  icon: Icon(Icons.person),
+                  hintText: "Father's name",
                   border: InputBorder.none,
                 ),
               ),
             ),
             Container(
-              padding: EdgeInsets.zero,
+              padding: EdgeInsets.only(left: 20,right: 20),
               height: 40,
               margin: EdgeInsets.only(left: 20,right: 20,top: 20),
               decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black)
+                  border: Border.all(color: Colors.green),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    new BoxShadow(
+                      color: Colors.green,
+                      offset: Offset(3,3),
+                      blurRadius: 7,
+                      spreadRadius: 1,
+                    ),
+                  ]
               ),
               child: TextField(
                 controller: aadhar,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
-                  labelText: "Aadhar No",
+                  icon: Icon(Icons.inventory),
+                  hintText: "Aadhar No",
                   border: InputBorder.none,
                 ),
               ),
             ),
             Container(
-              padding: EdgeInsets.zero,
+              padding: EdgeInsets.only(left: 20,right: 20),
               height: 40,
               margin: EdgeInsets.only(left: 20,right: 20,top: 20),
               decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black)
+                  border: Border.all(color: Colors.green),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    new BoxShadow(
+                      color: Colors.green,
+                      offset: Offset(3,3),
+                      blurRadius: 7,
+                      spreadRadius: 1,
+                    ),
+                  ]
               ),
               child: TextField(
                 keyboardType: TextInputType.emailAddress,
                 controller: email,
                 decoration: InputDecoration(
-                  labelText: "Email",
+                  icon: Icon(Icons.email),
+                  hintText: "Email",
                   border: InputBorder.none,
                 ),
               ),
             ),
             Container(
-              padding: EdgeInsets.zero,
+              padding: EdgeInsets.only(left: 20,right: 20),
               height: 40,
               margin: EdgeInsets.only(left: 20,right: 20,top: 20),
               decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black)
+                  border: Border.all(color: Colors.green),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    new BoxShadow(
+                      color: Colors.green,
+                      offset: Offset(3,3),
+                      blurRadius: 7,
+                      spreadRadius: 1,
+                    ),
+                  ],
               ),
               child: TextField(
                 keyboardType: TextInputType.number,
                 controller: contact_no,
                 decoration: InputDecoration(
-                  labelText: "Contact number",
+                  icon: Icon(Icons.phone_android),
+                  hintText: "Contact number",
                   border: InputBorder.none,
                 ),
               ),
             ),
             Container(
-              padding: EdgeInsets.zero,
+              padding: EdgeInsets.only(left: 20,right: 20),
               height: 40,
               margin: EdgeInsets.only(left: 20,right: 20,top: 20),
               decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black)
+                  border: Border.all(color: Colors.green),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    new BoxShadow(
+                      color: Colors.green,
+                      offset: Offset(3,3),
+                      blurRadius: 7,
+                      spreadRadius: 1,
+                    ),
+                  ]
               ),
               child: TextField(
                 keyboardType: TextInputType.number,
                 controller: contact_no2,
                 decoration: InputDecoration(
-                  labelText: "Alternate number",
+                  icon: Icon(Icons.phone),
+                  hintText: "Alternate number",
                   border: InputBorder.none,
                 ),
               ),
             ),
             Container(
-              padding: EdgeInsets.zero,
+              padding: EdgeInsets.only(left: 20,right: 20),
               height: 40,
               margin: EdgeInsets.only(left: 20,right: 20,top: 20),
               decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black)
+                  border: Border.all(color: Colors.green),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    new BoxShadow(
+                      color: Colors.green,
+                      offset: Offset(3,3),
+                      blurRadius: 7,
+                      spreadRadius: 1,
+                    ),
+                  ]
               ),
               child: TextField(
                 controller: room_no,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
-                  labelText: "Room number",
+                  icon: Icon(Icons.house),
+                  hintText: "Room number",
                   border: InputBorder.none,
                 ),
               ),
             ),
             Container(
-              padding: EdgeInsets.zero,
+              padding: EdgeInsets.only(left: 20,right: 20),
               height: 40,
               margin: EdgeInsets.only(left: 20,right: 20,top: 20),
               decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black)
+                  border: Border.all(color: Colors.green),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    new BoxShadow(
+                      color: Colors.green,
+                      offset: Offset(3,3),
+                      blurRadius: 7,
+                      spreadRadius: 1,
+                    ),
+                  ]
               ),
               child: TextField(
                 keyboardType: TextInputType.number,
                 controller: rent_amount,
                 decoration: InputDecoration(
-                  labelText: "Rent",
+                  icon: Icon(CupertinoIcons.money_dollar_circle_fill),
+                  hintText: "Rent",
                   border: InputBorder.none,
                 ),
               ),
             ),
             Container(
-              padding: EdgeInsets.zero,
+              padding: EdgeInsets.only(left: 20,right: 20),
               height: 40,
               margin: EdgeInsets.only(left: 20,right: 20,top: 20),
               decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black)
+                  border: Border.all(color: Colors.green),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    new BoxShadow(
+                      color: Colors.green,
+                      offset: Offset(3,3),
+                      blurRadius: 7,
+                      spreadRadius: 1,
+                    ),
+                  ]
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  Icon(Icons.date_range),
                   Text(rent_date),
                   ElevatedButton(
                     style: ButtonStyle(
@@ -193,10 +318,10 @@ class _AddRenterState extends State<AddRenter> {
             ),
             SizedBox(height: 30,),
             ElevatedButton(
-              onPressed: (){
-              },
+              onPressed: saverRenter,
               child: Text("Add renter"),
             ),
+            ElevatedButton(onPressed: viewRenter, child: Text("ShowAll")),
           ],
         ),
       ),

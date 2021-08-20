@@ -1,51 +1,39 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rent_management_system/pages/add_renter.dart';
-class AdminPanel extends StatelessWidget {
+import 'package:rent_management_system/pages/sign_up.dart';
+class AdminPanel extends StatefulWidget {
+  @override
+  _AdminPanelState createState() => _AdminPanelState();
+}
+
+class _AdminPanelState extends State<AdminPanel> {
+  final List _pages=<Widget>[
+    AddRenter(),
+    SignUpPage(),
+    AddRenter(),
+  ];
+
+  int _currentState=0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Admin Panel"),
-       // leading: Icon(Icons.admin_panel_settings),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.only(top: 30),
-              alignment: Alignment.center,
-              padding: EdgeInsets.all(60),
-              decoration: BoxDecoration(
-                color: Colors.blue,
-               shape: BoxShape.circle,
-              ),
-              child: TextButton(
-                onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>AddRenter()));
-                },
-                child: Text("Add Renter",style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),),
-              ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentState,
+        onTap: (index){
+          setState(() {
+            _currentState=index;
+          });
+        },
+        items: [
+          BottomNavigationBarItem(icon: Icon(CupertinoIcons.add),label: "Add Renter"),
+          BottomNavigationBarItem(icon: Icon(CupertinoIcons.money_dollar),label: "Submit Rent"),
+          BottomNavigationBarItem(icon: Icon(CupertinoIcons.delete),label: "Delete Renter"),
+        ],
 
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 30),
-              //alignment: Alignment.center,
-              padding: EdgeInsets.all(60),
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                shape: BoxShape.circle,
-              ),
-              child: Text("Submit Rent",style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-              ),),
-            ),
-          ],
-        ),
       ),
+      body:_pages[_currentState],
     );
   }
 }
