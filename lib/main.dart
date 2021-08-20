@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:rent_management_system/pages/add_renter.dart';
+import 'package:rent_management_system/pages/admin_db_helper.dart';
 import 'package:rent_management_system/pages/admin_panel.dart';
+import 'package:rent_management_system/pages/sign_up.dart';
 void main(){
   runApp(MyApp());
 }
@@ -16,15 +17,16 @@ class MyApp extends StatelessWidget {
   }
 }
 class LogInPage extends StatefulWidget {
-  const LogInPage({Key? key}) : super(key: key);
-
   @override
   _LogInPageState createState() => _LogInPageState();
 }
 
 class _LogInPageState extends State<LogInPage> {
+  final db = DatabaseHelper.instance;
+  bool flag=false;
   TextEditingController user_name=TextEditingController();
   TextEditingController password=TextEditingController();
+  List<userName>allUser;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,10 +99,7 @@ class _LogInPageState extends State<LogInPage> {
               alignment: Alignment.center,
               margin: EdgeInsets.only(left: 60,right: 60,top: 50),
               child: ElevatedButton(
-                onPressed: (){
-                  Navigator.push(context,MaterialPageRoute(builder: (context)=>AdminPanel()));
-
-                },
+                onPressed: logIn,
                 child: Text("Log In"),
                 style:ButtonStyle(
                   elevation: MaterialStateProperty.all(0),
@@ -113,7 +112,11 @@ class _LogInPageState extends State<LogInPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text("New User"),
-                ElevatedButton(onPressed: (){},
+                ElevatedButton(onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context){
+                    return SignUpPage();
+                  }));
+                },
                     style: ButtonStyle(
                       elevation: MaterialStateProperty.all(0),
                       backgroundColor: MaterialStateProperty.all(Colors.white),
@@ -131,5 +134,66 @@ class _LogInPageState extends State<LogInPage> {
       ),
     );
   }
+  void logIn(){
+    if(user_name.text==''||password.text==''){
+      showAlert(context);
+    }
+    else{
+      searchUser(user_name.text, password.text);
+        // showLogInAlert(context);
+    }
+  }
+  void showAlert(BuildContext context){
+    Widget okButton=TextButton(
+        onPressed: (){
+      Navigator.of(context).pop();
+      setState(() {
+        user_name.clear();
+        password.clear();
+      });
+        },
+        child: Text("Ok")
+    );
+    AlertDialog emptyalert=AlertDialog(
+      title: Text("Error!"),
+      content: Text("Username or Password can't be empty."),
+      actions: [okButton],
+    );
+    showDialog(context: context, builder: (BuildContext context){
+      return emptyalert;
+    });
+  }
+   searchUser(String userName,String pass) async{
+    allUser= await db.vieweAllUsers();
+    allUser.forEach((obj) {
+      if(obj.user_name==userName) {
+        if (obj.password == pass) {
+          flag = true;
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => AdminPanel())
+          ).then((value) => flag = false);
+        }
+      }
+    });
+    if(flag==false)
+      showLogInAlert(context);
+  }
+  void showLogInAlert(BuildContext context){
+    Widget okButton=TextButton(
+        onPressed: (){
+          Navigator.of(context).pop();
+        },
+        child: Text("Ok")
+    );
+    AlertDialog loginalert=AlertDialog(
+      title: Text("Error!"),
+      content: Text("Username or Password Incorrect"),
+      actions: [okButton],
+    );
+    showDialog(context: context, builder: (BuildContext context){
+      return loginalert;
+    });
+  }
+
 }
 

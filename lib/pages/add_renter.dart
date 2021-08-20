@@ -23,7 +23,7 @@ class _AddRenterState extends State<AddRenter> {
    // DateFormat formatter = DateFormat('yyyy-MM-dd');
    // String rent_date=formatter.format(currentDate);
   Future<void> _selectDate(BuildContext context) async {
-    final DateTime? pickedDate = await showDatePicker(
+    final DateTime pickedDate = await showDatePicker(
         context: context,
         initialDate: currentDate,
         firstDate: DateTime(2015),
