@@ -172,7 +172,10 @@ class _LogInPageState extends State<LogInPage> {
           flag = true;
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => AdminPanel())
-          ).then((value) => flag = false);
+          ).then((value) {
+            flag = false;
+            ExitAlert(context);
+          });
         }
       }
     });
@@ -193,6 +196,28 @@ class _LogInPageState extends State<LogInPage> {
     );
     showDialog(context: context, builder: (BuildContext context){
       return loginalert;
+    });
+  }
+  void ExitAlert(BuildContext context){
+    Widget okButton=TextButton(
+        onPressed: (){
+          Navigator.of(context).pop();
+        },
+        child: Text("Yes")
+    );
+    Widget noButton=TextButton(
+        onPressed: (){
+          Navigator.push(context, MaterialPageRoute(builder: (context) => AdminPanel()));
+        },
+        child: Text("No")
+    );
+    AlertDialog exitAlert=AlertDialog(
+      title: Text("Error!"),
+      content: Text("Do you want to Logout"),
+      actions: [okButton,noButton],
+    );
+    showDialog(context: context, builder: (BuildContext context){
+      return exitAlert;
     });
   }
 
